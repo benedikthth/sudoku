@@ -1,0 +1,39 @@
+:root{
+  --dim: 30px;
+  --bord: 3px solid black;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+.small {
+  height: var(--dim);
+  width: var(--dim);
+  margin: 0px 0px 0px 0px;
+}
+
+input {
+  text-align: center;
+  font-size: 30px;
+}
+
+.ERROR {
+  border: 3px solid red;
+}
+
+.edge {
+  border-right: var(--bord);
+}
+
+.row {
+  border-bottom: var(--bord);
+}
+
+.upperBound{
+  border-top: var(--bord);
+}
+
+.leftBound{
+    border-left: var(--bord);
+}
