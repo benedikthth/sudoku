@@ -8,6 +8,7 @@ table {
 }
 
 .small {
+  border: 1px solid black;
   height: var(--dim);
   width: var(--dim);
   margin: 0px 0px 0px 0px;
@@ -18,9 +19,23 @@ input {
   font-size: 30px;
 }
 
-.ERROR {
-  border: 3px solid red;
+.disabled{
+  background-color: grey;
 }
+
+.ERROR {
+  border-color: red;
+  background-repeat: repeat;
+  background-size: 2px;
+  background-image: url(err.png);
+}
+
+
+.disabled.ERROR {
+  border-color: red;
+  background-image: url(derr.png);
+}
+
 
 .edge {
   border-right: var(--bord);

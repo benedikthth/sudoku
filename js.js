@@ -1,10 +1,34 @@
 var table = document.getElementById('table');
 var inputs = [];
 
+function handleClick(ev){
+  ev.preventDefault();
+  if(ev.button == 2){
+    //disable
+    console.log(this.classList);
+    if(this.classList.contains('disabled') ){
+      this.classList.remove('disabled');
+    } else {
+      this.classList.add('disabled');
+      this.blur();
+    }
+  }
+}
+
+function handleFocus(ev) {
+  if(this.classList.contains('disabled')){
+    this.blur();
+  }
+}
+
 function createInput(x, y) {
   var el = document.createElement('input');
   el.id = x+"->"+y;
   el.classList.add('small');
+  el.octx = handleClick.bind(el);
+  el.onfocus = handleFocus.bind(el);
+  el.oncontextmenu = (x=> el.octx(x) );
+  el.onclick = handleClick.bind(el);
   el.oninput = verify.bind(null, el);//verify.bind(this, [x, y]);
   var td = document.createElement('td');
   td.append(el);
@@ -13,9 +37,10 @@ function createInput(x, y) {
 }
 
 function verify(that){
-  if(parseInt(that.value) > 9 || parseInt(that.value) < 1){
+  if(parseInt(that.value) > 9 || parseInt(that.value) < 1 || isNaN(parseInt(that.value))){
     that.value = "";
   } else {
+    inputs[(inputs.indexOf(that)+1)%inputs.length].focus();
     BroadCheck();
   }
 }
@@ -30,7 +55,7 @@ function getSector(xy){
 
 function BroadCheck(){
   var errors = [];
-  inputs.forEach(x=>x.classList=['small']);
+  inputs.forEach(x=>x.classList.remove('ERROR'));
 
   inputs.forEach(function(input){
     var xy = getCoords(input);
@@ -42,7 +67,6 @@ function BroadCheck(){
         }),
         inputs.filter( i => (getSector(xy) === getSector(getCoords(i)) ) )
       )).filter(x=>x!==input);
-
       //interests.forEach(x=> x.classList.add('selected'));
       var errs = interests.filter(x=> x.value === input.value );
       errs.forEach(x=>errors.push(x));
@@ -50,7 +74,13 @@ function BroadCheck(){
 
   });
 
-  errors.forEach(x=> x.classList.add('ERROR'));
+  if(errors.length > 0){
+    errors.forEach(x=> x.classList.add('ERROR'));
+  } else {
+    if( (inputs.filter(x=>x.value==="")).length == 0 ){
+      alert('good job');
+    }
+  }
 }
 
 
